@@ -1,0 +1,303 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+    --bg: #0b0e13;
+    --panel: #141922;
+    --panel-light: #1b2330;
+    --gold: #d7b46a;
+    --gold-light: #f3d99b;
+    --text: #eee8dc;
+    --muted: #9da5b1;
+    --border: rgba(215, 180, 106, 0.25);
+    --radius: 16px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    background:
+        radial-gradient(ellipse at 50% 0%, #263044 0%, transparent 55%),
+        radial-gradient(ellipse at 100% 100%, #251b14 0%, transparent 40%),
+        var(--bg);
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.12;
+    background-image:
+        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+    background-size: 40px 40px;
+}
+
+header {
+    position: relative;
+    padding: 55px 20px 38px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(
+        180deg,
+        rgba(9, 12, 17, 0.95),
+        rgba(15, 19, 27, 0.75)
+    );
+}
+
+header h1 {
+    margin: 0;
+    color: var(--gold-light);
+    font-family: 'Cinzel', Georgia, serif;
+    font-size: clamp(2.4rem, 6vw, 4.5rem);
+    font-weight: 800;
+    letter-spacing: 0.13em;
+    text-shadow: 0 0 35px rgba(215, 180, 106, 0.2);
+}
+
+header p {
+    margin: 14px 0 0;
+    color: var(--muted);
+    font-size: 0.78rem;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+}
+
+main {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: 26px;
+    width: min(1100px, 92%);
+    margin: 42px auto 70px;
+}
+
+section {
+    min-width: 0;
+    padding: 30px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: linear-gradient(
+        145deg,
+        rgba(28, 36, 49, 0.96),
+        rgba(16, 21, 29, 0.98)
+    );
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+}
+
+h2 {
+    margin: 0 0 26px;
+    color: var(--gold);
+    font-family: 'Cinzel', Georgia, serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+}
+
+label {
+    display: block;
+    margin: 21px 0 9px;
+    color: #d8d0c1;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+select,
+textarea {
+    display: block;
+    width: 100%;
+    padding: 14px 15px;
+    color: var(--text);
+    font: inherit;
+    font-size: 0.95rem;
+    background: #0d1219;
+    border: 1px solid #394352;
+    border-radius: 9px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+select {
+    cursor: pointer;
+}
+
+select:focus,
+textarea:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(215, 180, 106, 0.1);
+}
+
+select option {
+    color: var(--text);
+    background: #141922;
+}
+
+textarea {
+    min-height: 115px;
+    resize: vertical;
+    line-height: 1.6;
+}
+
+textarea::placeholder {
+    color: #737d8b;
+}
+
+button {
+    width: 100%;
+    margin-top: 27px;
+    padding: 16px 20px;
+    color: #17130c;
+    background: linear-gradient(135deg, #f1d99d, #c79b4d);
+    border: 1px solid #f2dba0;
+    border-radius: 9px;
+    font-family: 'Cinzel', Georgia, serif;
+    font-size: 0.88rem;
+    font-weight: 800;
+    letter-spacing: 0.07em;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(184, 137, 53, 0.12);
+    transition: transform 0.2s, box-shadow 0.2s, filter 0.2s;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.08);
+    box-shadow: 0 12px 30px rgba(184, 137, 53, 0.23);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+button:disabled {
+    opacity: 0.65;
+    cursor: wait;
+    transform: none;
+}
+
+/* Ficha del héroe */
+#resultado {
+    min-height: 310px;
+    padding: 25px;
+    color: #f0eadf;
+    background:
+        radial-gradient(ellipse at top, rgba(215, 180, 106, 0.09), transparent 65%),
+        #0d1219;
+    border: 1px solid rgba(215, 180, 106, 0.28);
+    border-radius: 12px;
+    line-height: 1.8;
+    overflow-wrap: anywhere;
+}
+
+/* Estado inicial */
+#resultado.vacio {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #929cab;
+}
+
+/* Nombre del personaje */
+.hero-nombre {
+    margin: 0 0 12px;
+    color: #f0cc78;
+    font-family: 'Cinzel', Georgia, serif;
+    font-size: clamp(1.5rem, 3vw, 2.1rem);
+    font-weight: 800;
+    line-height: 1.35;
+    letter-spacing: 0.04em;
+    text-shadow: 0 0 22px rgba(215, 180, 106, 0.16);
+}
+
+/* Raza y clase */
+.hero-identidad {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 9px;
+    margin: 15px 0 22px;
+    color: #f5f1e9;
+    font-size: 0.88rem;
+    font-weight: 600;
+}
+
+.hero-separador {
+    color: #bd9650;
+}
+
+/* Insignia del nivel */
+.hero-nivel {
+    display: inline-block;
+    padding: 5px 12px;
+    color: #f3d99b;
+    background: rgba(215, 180, 106, 0.1);
+    border: 1px solid rgba(215, 180, 106, 0.45);
+    border-radius: 5px;
+    font-family: 'Cinzel', Georgia, serif;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+}
+
+/* Separador ornamental */
+.hero-linea {
+    height: 1px;
+    margin: 22px 0;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        #b9924e,
+        rgba(185, 146, 78, 0.15),
+        transparent
+    );
+}
+
+/* Secciones de personalidad e historia */
+.hero-seccion {
+    margin-top: 21px;
+}
+
+.hero-seccion h4 {
+    margin: 0 0 9px;
+    color: #d9b66d;
+    font-family: 'Cinzel', Georgia, serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.hero-seccion p {
+    margin: 0;
+    color: #e4e7eb;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.94rem;
+    line-height: 1.9;
+    white-space: pre-wrap;
+}
+
+/* Mensajes de carga y error */
+.hero-mensaje {
+    color: #d5bd89;
+    font-style: italic;
+    line-height: 1.8;
+}
+
+.hero-sprite {
+    display: block;
+    width: 160px;
+    height: 240px;
+    object-fit: contain;
+    image-rendering: pixelated;
+    margin: 0 auto 24px;
+    filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.45));
+}

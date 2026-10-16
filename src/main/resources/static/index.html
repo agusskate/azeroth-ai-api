@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Azeroth AI | Creador de héroes</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>AZEROTH AI</h1>
+      <p>Forja tu leyenda. Crea tu héroe.</p>
+    </header>
+
+    <main>
+      <section>
+        <h2>Crear personaje</h2>
+
+        <form id="formulario">
+          <label for="raza">Raza</label>
+          <select id="raza" required>
+            <option value="Humano">Humano</option>
+            <option value="Orco">Orco</option>
+            <option value="Elfo de la noche">Elfo de la noche</option>
+            <option value="Enano">Enano</option>
+            <option value="No-muerto">No-muerto</option>
+            <option value="Trol">Trol</option>
+          </select>
+
+          <label for="clase">Clase</label>
+          <select id="clase" required>
+            <option value="Guerrero">Guerrero</option>
+            <option value="Mago">Mago</option>
+            <option value="Cazador">Cazador</option>
+            <option value="Sacerdote">Sacerdote</option>
+            <option value="Pícaro">Pícaro</option>
+            <option value="Paladín">Paladín</option>
+            <option value="Brujo">Brujo</option>
+          </select>
+
+          <label for="personalidad">Personalidad</label>
+          <textarea
+            id="personalidad"
+            rows="3"
+            placeholder="Ej.: Valiente, misterioso y honorable..."
+            required
+          ></textarea>
+
+          <button type="submit">⚔ Generar personaje</button>
+        </form>
+      </section>
+
+      <section>
+        <h2>Tu héroe</h2>
+        <div id="resultado" class="vacio">
+          Tu aventura comienza aquí...
+          <br /><br />
+          Elige una raza, una clase y una personalidad para descubrir tu
+          destino.
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const formulario = document.getElementById('formulario')
+      const resultado = document.getElementById('resultado')
+
+      formulario.addEventListener('submit', async evento => {
+        evento.preventDefault()
+
+        resultado.classList.remove('vacio')
+        resultado.textContent = 'Consultando a la inteligencia artificial...'
+
+        const peticion = {
+          raza: document.getElementById('raza').value,
+          clase: document.getElementById('clase').value,
+          personalidad: document.getElementById('personalidad').value
+        }
+
+        try {
+          const respuesta = await fetch('/personajes', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(peticion)
+          })
+
+          if (!respuesta.ok) {
+            throw new Error('La API ha respondido con un error.')
+          }
+
+          const personaje = await respuesta.json()
+
+          // Elegir el sprite según la raza y la clase
+          const razaNormalizada = (personaje.raza || '').toLowerCase()
+          const claseNormalizada = (personaje.clase || '').toLowerCase()
+
+          let sprite = '/images/orco-guerrero.svg'
+
+          if (razaNormalizada.includes('orco') && claseNormalizada.includes('guerrero')) {
+            sprite = '/images/orco-guerrero.svg'
+          }
+
+          // Preparar el retrato
+          const retrato = document.createElement('img')
+          retrato.src = sprite
+          retrato.alt = `${personaje.raza} ${personaje.clase}`
+          retrato.className = 'hero-sprite'
+          resultado.replaceChildren(retrato)
+          resultado.classList.remove('vacio')
+
+          // Nombre destacado
+          const nombre = document.createElement('h3')
+          nombre.className = 'hero-nombre'
+          nombre.textContent = personaje.nombre || 'Héroe desconocido'
+          resultado.appendChild(nombre)
+
+          // Nivel
+          const nivel = document.createElement('span')
+          nivel.className = 'hero-nivel'
+          nivel.textContent = 'NIVEL ' + (personaje.nivel ?? '?')
+          resultado.appendChild(nivel)
+
+          // Raza y clase
+          const identidad = document.createElement('div')
+          identidad.className = 'hero-identidad'
+
+          const raza = document.createElement('span')
+          raza.textContent = personaje.raza || 'Raza desconocida'
+
+          const separador = document.createElement('span')
+          separador.className = 'hero-separador'
+          separador.textContent = '✦'
+
+          const clase = document.createElement('span')
+          clase.textContent = personaje.clase || 'Clase desconocida'
+
+          identidad.append(raza, separador, clase)
+          resultado.appendChild(identidad)
+
+          // Línea decorativa
+          const linea = document.createElement('div')
+          linea.className = 'hero-linea'
+          resultado.appendChild(linea)
+
+          // Función para crear cada sección de texto
+          function agregarSeccion(titulo, contenido) {
+            const seccion = document.createElement('div')
+            seccion.className = 'hero-seccion'
+
+            const encabezado = document.createElement('h4')
+            encabezado.textContent = titulo
+
+            const texto = document.createElement('p')
+            texto.textContent = contenido || 'Sin información disponible.'
+
+            seccion.append(encabezado, texto)
+            resultado.appendChild(seccion)
+          }
+
+          agregarSeccion('Personalidad', personaje.personalidad)
+          agregarSeccion('Historia', personaje.historia)
+
+          if (personaje.especializacion) {
+            agregarSeccion('Especialización', personaje.especializacion)
+          }
+        } catch (error) {
+          resultado.textContent =
+            'No se pudo generar el personaje. Comprueba que la API y Ollama estén funcionando.'
+          console.error(error)
+        }
+      })
+    </script>
+  </body>
+</html>
